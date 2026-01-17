@@ -6,6 +6,9 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
 
+from src.components.data_transformation import DataTransformation
+from src.components.data_transformation import DataTransformationConfig
+
 @dataclass
 class DataInjectionClass:
     train_data_path:str = os.path.join("artifacts","train.csv")
@@ -21,7 +24,7 @@ class DataInjection:
         try:
             df=pd.read_csv('notebook//data//stud.csv')     
             logging.info("Data has been read from  csv")
-            os.makedirs(os.path.dirname(self.injestion_config.train_data_path),exist_ok=False)
+            os.makedirs(os.path.dirname(self.injestion_config.train_data_path),exist_ok=True)
             df.to_csv(self.injestion_config.raw_data_path,index=False,header=True)
             logging.info("Raw data has been saved into csv")
 
@@ -43,5 +46,7 @@ class DataInjection:
         
 
 if __name__ == "__main__":
-    obj=DataInjection()
-    obj.initiate_data_injection()
+    obj=DataInjection()    
+    train_data,test_data=obj.initiate_data_injection()
+    data_transformation=DataTransformation()
+    data_transformation.initiate_data_transformation(train_path=train_data,test_path=test_data)
