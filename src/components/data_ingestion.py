@@ -8,7 +8,7 @@ from dataclasses import dataclass
 
 from src.components.data_transformation import DataTransformation
 from src.components.data_transformation import DataTransformationConfig
-
+from src.components.model_trainer import ModelTraining
 @dataclass
 class DataInjectionClass:
     train_data_path:str = os.path.join("artifacts","train.csv")
@@ -49,4 +49,6 @@ if __name__ == "__main__":
     obj=DataInjection()    
     train_data,test_data=obj.initiate_data_injection()
     data_transformation=DataTransformation()
-    data_transformation.initiate_data_transformation(train_path=train_data,test_path=test_data)
+    train_data,test_data,_=data_transformation.initiate_data_transformation(train_path=train_data,test_path=test_data)
+    model_trainer=ModelTraining()
+    model_trainer.ModelTrainer(train_data=train_data,test_data=test_data)    
